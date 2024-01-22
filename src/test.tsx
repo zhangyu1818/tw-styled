@@ -62,6 +62,11 @@ describe('tw-styled', () => {
     const TwFunctionComponent = withTw(FunctionComponent)`bg-red-500`
 
     expect(TwFunctionComponent.displayName).toBe('tw-FunctionComponent')
+
+    const FunctionComponent1 = () => <div />
+    const TwFunctionComponent1 = withTw(FunctionComponent1)`bg-red-500`
+    expect(TwFunctionComponent1.displayName).toBe('tw-FunctionComponent1')
+
   })
 
   it('sets displayName correctly for non-function components', () => {

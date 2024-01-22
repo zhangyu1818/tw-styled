@@ -41,7 +41,7 @@ export function withTw(Component: any): any {
       ),
     )
 
-    ComponentWithTw.displayName = `tw-${typeof Component === 'function' ? Component.displayName : Component}`
+    ComponentWithTw.displayName = `tw-${typeof Component === 'function' ? Component.displayName || Component.name : Component}`
     return ComponentWithTw
   }
 }
