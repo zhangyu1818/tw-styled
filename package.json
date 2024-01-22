@@ -8,6 +8,7 @@
     "name": "zhangyu1818",
     "email": "hey@zhangyu.dev"
   },
+  "repository": "https://github.com/zhangyu1818/tw-styled",
   "license": "MIT",
   "devDependencies": {
     "@swc/core": "^1.3.104",

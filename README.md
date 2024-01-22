@@ -1,5 +1,11 @@
 # tw-styled
 
+![npm-version](https://img.shields.io/npm/v/tw-styled.svg)
+[![codecov](https://codecov.io/gh/zhangyu1818/tw-styled/graph/badge.svg?token=Ds8VpqzAwG)](https://codecov.io/gh/zhangyu1818/tw-styled)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/tw-styled)
+
+---
+
 `tw-styled` is a React library for quickly creating reusable components utilizing Tailwind CSS. It provides a straightforward and intuitive API, allowing you to integrate Tailwind CSS into your components seamlessly. This library supports all HTML elements and function components, ensuring that you can style your components effortlessly with the full power of Tailwind CSS at your disposal.
 
 ## Features
@@ -17,7 +23,7 @@ Before using `tw-styled`, ensure that Tailwind CSS is properly integrated into y
 Install `tw-styled` via npm:
 
 ```bash
-npm install tw-styled
+npm install tw-styled tailwind-merge
 ```
 
 
