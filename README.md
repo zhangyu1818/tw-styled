@@ -2,7 +2,7 @@
 
 ![npm-version](https://img.shields.io/npm/v/tw-styled.svg)
 [![codecov](https://codecov.io/gh/zhangyu1818/tw-styled/graph/badge.svg?token=Ds8VpqzAwG)](https://codecov.io/gh/zhangyu1818/tw-styled)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/tw-styled)
+![npm bundle size](https://deno.bundlejs.com/badge?q=tw-styled@1.0.0)
 
 ---
 
