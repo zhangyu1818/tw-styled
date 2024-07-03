@@ -1,10 +1,13 @@
-import React from 'react'
 import { render } from '@testing-library/react'
+
+import React from 'react'
+
+import { tw } from './merge'
+import { create } from './styled'
+
 import '@testing-library/jest-dom'
 
-import { tw, withTw } from './styled'
-
-describe('tw-styled', () => {
+describe('tw-styled with tailwind-merge', () => {
   it('creates components with different HTML tags', () => {
     const DivComponent = tw.div`block`
     const SpanComponent = tw.span`inline`
@@ -49,7 +52,7 @@ describe('tw-styled', () => {
   it('passes other props to the component', () => {
     const TestComponent = tw.div`block`
     const { getByTestId } = render(
-      <TestComponent data-testid='test-div' aria-label='Test Div' />,
+      <TestComponent aria-label='Test Div' data-testid='test-div' />,
     )
 
     const element = getByTestId('test-div')
@@ -59,18 +62,17 @@ describe('tw-styled', () => {
   it('sets displayName correctly for function components', () => {
     const FunctionComponent = () => <div />
     FunctionComponent.displayName = 'FunctionComponent'
-    const TwFunctionComponent = withTw(FunctionComponent)`bg-red-500`
+    const TwFunctionComponent = tw(FunctionComponent)`bg-red-500`
 
     expect(TwFunctionComponent.displayName).toBe('tw-FunctionComponent')
 
     const FunctionComponent1 = () => <div />
-    const TwFunctionComponent1 = withTw(FunctionComponent1)`bg-red-500`
+    const TwFunctionComponent1 = tw(FunctionComponent1)`bg-red-500`
     expect(TwFunctionComponent1.displayName).toBe('tw-FunctionComponent1')
-
   })
 
   it('sets displayName correctly for non-function components', () => {
-    const TwDivComponent = withTw('div')`bg-red-500`
+    const TwDivComponent = tw('div')`bg-red-500`
 
     expect(TwDivComponent.displayName).toBe('tw-div')
   })
@@ -78,7 +80,7 @@ describe('tw-styled', () => {
   it('correctly passes className to a function component and merges it', () => {
     const FunctionComponent = (props: any) => <div {...props} />
 
-    const TwFunctionComponent = withTw(FunctionComponent)`bg-red-500`
+    const TwFunctionComponent = tw(FunctionComponent)`bg-red-500`
 
     const { getByTestId } = render(
       <TwFunctionComponent
@@ -89,5 +91,37 @@ describe('tw-styled', () => {
 
     const element = getByTestId('test-div')
     expect(element).toHaveClass('bg-black text-white')
+  })
+})
+
+describe('tw-styled with custom merge function', () => {
+  const tw = create(() => 'custom')
+
+  it('merges tailwind classes from props with predefined classes', () => {
+    const TestComponent = tw.div`bg-red-500`
+    const { getByTestId } = render(
+      <TestComponent className='bg-black text-white' data-testid='test-div'>
+        Hello
+      </TestComponent>,
+    )
+
+    const element = getByTestId('test-div')
+    expect(element).toHaveClass('custom')
+  })
+
+  it('correctly passes className to a function component and merges it', () => {
+    const FunctionComponent = (props: any) => <div {...props} />
+
+    const TwFunctionComponent = tw(FunctionComponent)`bg-red-500`
+
+    const { getByTestId } = render(
+      <TwFunctionComponent
+        className='bg-black text-white'
+        data-testid='test-div'
+      />,
+    )
+
+    const element = getByTestId('test-div')
+    expect(element).toHaveClass('custom')
   })
 })

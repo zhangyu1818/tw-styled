@@ -1,47 +1,50 @@
 import * as React from 'react'
-import { twMerge } from 'tailwind-merge'
 
 type Tags = keyof React.JSX.IntrinsicElements
+type Styles = TemplateStringsArray | string
+type ExternalProps<T> = { className?: string } & T
+type MergeFunction = (...args: any[]) => string
 
 type Styled = {
-  [Tag in Tags]: (
-    styles: TemplateStringsArray,
-  ) => React.FC<React.JSX.IntrinsicElements[Tag]>
+  [Tag in Tags]: (styles: Styles) => React.FC<React.JSX.IntrinsicElements[Tag]>
 }
 
 type WithTwReturn<T> = React.ForwardRefExoticComponent<
   React.PropsWithoutRef<T> & React.RefAttributes<unknown>
 >
 
-type ExternalProps<T> = T & { className?: string }
+type TwFunction = {
+  <T extends Tags>(
+    Tag: T,
+  ): (styles: Styles) => Styled & WithTwReturn<React.JSX.IntrinsicElements[T]>
+  <T>(
+    Component: React.ComponentType<T>,
+  ): (styles: Styles) => Styled & WithTwReturn<T>
+} & Styled
 
-export const tw: Styled = new Proxy({} as Styled, {
-  get(_, Tag: Tags) {
-    return withTw(Tag)
-  },
-})
+export const create = (mergeFunction: MergeFunction) => {
+  const tw = new Proxy(withTw, {
+    get(_, Tag: Tags) {
+      return withTw(Tag)
+    },
+  }) as TwFunction
 
-export function withTw<T extends Tags>(
-  Tag: T,
-): (
-  styles: TemplateStringsArray,
-) => WithTwReturn<React.JSX.IntrinsicElements[T]>
-export function withTw<T>(
-  Component: React.ComponentType<T>,
-): (styles: TemplateStringsArray) => WithTwReturn<T>
-export function withTw(Component: any): any {
-  return (className: string) => {
-    const ComponentWithTw = React.forwardRef(
-      (props: ExternalProps<{}>, ref) => (
-        <Component
-          ref={ref}
-          {...props}
-          className={twMerge(className, props.className)}
-        />
-      ),
-    )
+  function withTw(Component: any): any {
+    return (className: string) => {
+      const ComponentWithTw = React.forwardRef(
+        (props: ExternalProps<unknown>, ref) => (
+          <Component
+            ref={ref}
+            {...props}
+            className={mergeFunction(className, props.className)}
+          />
+        ),
+      )
 
-    ComponentWithTw.displayName = `tw-${typeof Component === 'function' ? Component.displayName || Component.name : Component}`
-    return ComponentWithTw
+      ComponentWithTw.displayName = `tw-${typeof Component === 'function' ? Component.displayName || Component.name : Component}`
+      return ComponentWithTw
+    }
   }
+
+  return tw
 }

@@ -2,7 +2,7 @@
 
 ![npm-version](https://img.shields.io/npm/v/tw-styled.svg)
 [![codecov](https://codecov.io/gh/zhangyu1818/tw-styled/graph/badge.svg?token=Ds8VpqzAwG)](https://codecov.io/gh/zhangyu1818/tw-styled)
-![npm bundle size](https://deno.bundlejs.com/badge?q=tw-styled@1.0.0)
+![npm bundle size](https://deno.bundlejs.com/badge?q=tw-styled@2.0.0)
 
 ---
 
@@ -23,40 +23,68 @@ Before using `tw-styled`, ensure that Tailwind CSS is properly integrated into y
 Install `tw-styled` via npm:
 
 ```bash
+npm install tw-styled
+```
+
+If you need to use `tw-styled` with built-in classnames merge functionality, you should install the `tailwind-merge` package:
+
+```bash
 npm install tw-styled tailwind-merge
 ```
 
-
 ## Getting Started
 
-### 1. Importing the Library
+### Using `tw-styled` with built-in merge functionality
 
-Start by importing the `tw` function from `tw-styled`:
+Start by importing the `tw` function from `tw-styled/merge`:
 
 ```javascript
-import { tw } from 'tw-styled';
+import { tw } from 'tw-styled/merge'
 ```
 
-### 2. Creating Components
+### Creating Components with Tailwind CSS
 
 Use the `tw` function to create a component styled with Tailwind CSS classes:
 
 ```javascript
-const Button = tw.button`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`;
+const Button = tw.button`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`
 ```
 
-### 3. Using Components in Your Project
+or using function component to create a styled component:
+
+```javascript
+const Component = ({ className }) => (
+  <div className={className}>Function Component</div>
+)
+
+const StyledComponent = tw(
+  Component,
+)`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded`
+```
+
+### Using Components in Your Project
 
 You can now use the styled component just like any other React component:
 
 ```jsx
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <Button>Click me</Button>
     </div>
-  );
+  )
 }
+```
+
+### Using `tw-styled` with custom classnames merge functionality
+
+```javascript
+import { create } from 'tw-styled'
+
+const merge = (classNames, propsClassNames) =>
+  `${classNames} ${propsClassNames}`
+
+const tw = create(merge)
 ```
 
 ## API
@@ -67,39 +95,20 @@ A Proxy object for creating styled components with Tailwind CSS utility classes.
 
 #### Usage
 
-```javascript
-const StyledComponent = tw.Tag`tailwind-class-names`;
+```jsx
+const StyledComponent = tw.Tag`tailwind-class-names`
+const StyledComponent = tw.Tag('tailwind-class-names')
+
+const FunctionComponent = ({ className }) => (
+  <div className={className}>Function Component</div>
+)
+
+const StyledComponent = tw(FunctionComponent)`tailwind-class-names`
+const StyledComponent = tw(FunctionComponent)('tailwind-class-names')
 ```
 
 - **Tag**: An HTML tag (like `div`, `span`, `button`) or a React function component.
 - **tailwind-class-names**: A Template String of Tailwind CSS classes.
-
-Internally, `tw` uses the `withTw` function to create a React component with the applied Tailwind CSS styles.
-
-### `withTw`
-
-`withTw` is a higher-order function used by the `tw` proxy to create a React component that merges Tailwind CSS classes with the component's existing classes.
-
-#### Signature
-
-```typescript
-function withTw<T extends Tags>(
-  Tag: T,
-): (
-  styles: TemplateStringsArray,
-) => WithTwReturn<React.JSX.IntrinsicElements[T]>
-
-function withTw<T>(
-  Component: React.ComponentType<T>,
-): (styles: TemplateStringsArray) => WithTwReturn<T>
-```
-
-- **Tag / Component**: An HTML tag (like `div`, `span`, `button`) or a React component.
-- **styles**: A Template String of Tailwind CSS classes.
-
-#### Returns
-
-`WithTwReturn`: A React forward reference component that accepts all the props of the original component plus an additional `className` prop. It applies the Tailwind CSS styles using `twMerge` to intelligently merge class names.
 
 ## Contributing
 
@@ -108,4 +117,3 @@ Contributions are always welcome! If you have any suggestions, issues, or want t
 ## License
 
 MIT
-
