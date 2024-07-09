@@ -1,7 +1,7 @@
 {
   "name": "tw-styled",
   "type": "module",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": {
     "name": "zhangyu1818",
     "email": "hey@zhangyu.dev"
@@ -13,9 +13,9 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./merge": {
-      "types": "./dist/merge.d.ts",
-      "import": "./dist/merge.js"
+    "./create": {
+      "types": "./dist/styled.d.ts",
+      "import": "./dist/styled.js"
     }
   },
   "main": "dist/index.js",

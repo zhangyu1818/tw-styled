@@ -2,7 +2,7 @@
 
 ![npm-version](https://img.shields.io/npm/v/tw-styled.svg)
 [![codecov](https://codecov.io/gh/zhangyu1818/tw-styled/graph/badge.svg?token=Ds8VpqzAwG)](https://codecov.io/gh/zhangyu1818/tw-styled)
-![npm bundle size](https://deno.bundlejs.com/badge?q=tw-styled@2.0.0)
+![npm bundle size](https://deno.bundlejs.com/badge?q=tw-styled@3.0.0)
 
 ---
 
@@ -23,23 +23,23 @@ Before using `tw-styled`, ensure that Tailwind CSS is properly integrated into y
 Install `tw-styled` via npm:
 
 ```bash
-npm install tw-styled
+npm install tw-styled tailwind-merge
 ```
 
-If you need to use `tw-styled` with built-in classnames merge functionality, you should install the `tailwind-merge` package:
+If you need to use `tw-styled` with a customized merge function without installing the `tailwind-merge` package:
 
 ```bash
-npm install tw-styled tailwind-merge
+npm install tw-styled
 ```
 
 ## Getting Started
 
 ### Using `tw-styled` with built-in merge functionality
 
-Start by importing the `tw` function from `tw-styled/merge`:
+Start by importing the `tw` function from `tw-styled`:
 
 ```javascript
-import { tw } from 'tw-styled/merge'
+import { tw } from 'tw-styled'
 ```
 
 ### Creating Components with Tailwind CSS
@@ -79,7 +79,7 @@ function App() {
 ### Using `tw-styled` with custom classnames merge functionality
 
 ```javascript
-import { create } from 'tw-styled'
+import { create } from 'tw-styled/create'
 
 const merge = (classNames, propsClassNames) =>
   `${classNames} ${propsClassNames}`
